@@ -1,8 +1,14 @@
 import os
 import json
 import joblib
-import pandas as pd
+import numpy as np
 from app.services.feature_extractor import extract_features
+
+try:
+    import pandas as pd
+    HAS_PANDAS = True
+except ImportError:
+    HAS_PANDAS = False
 
 class MLEngine:
     def __init__ (self):
@@ -60,8 +66,13 @@ class MLEngine:
                 "model_used": "Heuristic Fallback"
             }
 
-        df_feat = pd.DataFrame([features_dict])
-        X_scaled = self.scaler.transform(df_feat)
+        if HAS_PANDAS:
+            df_feat = pd.DataFrame([features_dict])
+            X_scaled = self.scaler.transform(df_feat)
+        else:
+            X_raw = np.array([list(features_dict.values())])
+            X_scaled = self.scaler.transform(X_raw)
+
         
         pred_class = int(self.model.predict(X_scaled)[0])
         

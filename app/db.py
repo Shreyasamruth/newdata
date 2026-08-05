@@ -2,11 +2,20 @@ import os
 import sqlite3
 import hashlib
 
-# Use /tmp on Vercel Serverless environment, local file otherwise
-if 'VERCEL' in os.environ:
+# Use /tmp on Vercel Serverless environment, local file otherwise if writable
+if 'VERCEL' in os.environ or os.environ.get('VERCEL_ENV'):
     DB_PATH = '/tmp/pswx_database.db'
 else:
-    DB_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), '../pswx_database.db'))
+    local_db = os.path.abspath(os.path.join(os.path.dirname(__file__), '../pswx_database.db'))
+    try:
+        db_dir = os.path.dirname(local_db)
+        if not os.access(db_dir, os.W_OK):
+            DB_PATH = '/tmp/pswx_database.db'
+        else:
+            DB_PATH = local_db
+    except Exception:
+        DB_PATH = '/tmp/pswx_database.db'
+
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
