@@ -1,0 +1,386 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg-main: #f0f4ff;
+  --bg-gradient: linear-gradient(135deg, #edf2fe 0%, #e4ecff 40%, #f8fafc 100%);
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  
+  --border-blue: rgba(0, 82, 255, 0.18);
+  --border-glow: rgba(0, 102, 255, 0.35);
+  
+  --tech-blue: #0052ff;
+  --tech-blue-vivid: #0066ff;
+  --tech-cyan: #00b4d8;
+  --tech-indigo: #4338ca;
+  --tech-green: #10b981;
+  --tech-yellow: #f59e0b;
+  --tech-red: #ef4444;
+  
+  --text-dark: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+  
+  --shadow-3d: 0 15px 35px rgba(0, 82, 255, 0.08), 0 5px 15px rgba(15, 23, 42, 0.05);
+  --shadow-hover: 0 25px 50px rgba(0, 82, 255, 0.18), 0 0 25px rgba(0, 102, 255, 0.2);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-gradient);
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background Techie Password Canvas */
+#canvas3d {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.main-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/* White-Blue Techie Navigation Bar */
+.navbar-techie {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-blue);
+  padding: 1.1rem 2.5rem;
+  box-shadow: 0 4px 20px rgba(0, 82, 255, 0.06);
+}
+
+.brand-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo-techie {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, var(--tech-blue), var(--tech-cyan));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 82, 255, 0.35);
+  transform: perspective(500px) rotateY(-12deg);
+  transition: transform 0.3s ease;
+}
+
+.brand-logo-techie:hover {
+  transform: perspective(500px) rotateY(0deg) scale(1.05);
+}
+
+.brand-text-techie {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-dark);
+}
+
+.brand-text-techie span {
+  color: var(--tech-blue);
+}
+
+.brand-badge-techie {
+  background: rgba(0, 82, 255, 0.08);
+  border: 1px solid rgba(0, 82, 255, 0.2);
+  color: var(--tech-blue);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* Frosted White 3D Glassmorphic Cards */
+.glass-card-techie {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-blue);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--shadow-3d);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card-techie:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--tech-blue-vivid);
+  box-shadow: var(--shadow-hover);
+}
+
+.card-header-title-techie {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--tech-blue);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.card-header-title-techie i {
+  font-size: 1.3rem;
+  color: var(--tech-blue-vivid);
+}
+
+/* Hero Section */
+.hero-title-techie {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 3.2rem;
+  line-height: 1.1;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+}
+
+.hero-title-techie span {
+  background: linear-gradient(135deg, var(--tech-blue) 0%, var(--tech-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle-techie {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* White-Blue Password Input Box */
+.password-box-techie {
+  position: relative;
+  margin: 1.5rem 0;
+  transform: translateZ(20px);
+}
+
+.password-input-techie {
+  width: 100%;
+  background: #ffffff;
+  border: 2px solid rgba(0, 82, 255, 0.2);
+  border-radius: 14px;
+  padding: 1.25rem 4rem 1.25rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  color: var(--text-dark);
+  box-shadow: 0 4px 15px rgba(0, 82, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.password-input-techie:focus {
+  outline: none;
+  border-color: var(--tech-blue);
+  box-shadow: 0 0 25px rgba(0, 82, 255, 0.25);
+}
+
+.input-actions-techie {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action-techie {
+  background: #f1f5f9;
+  border: 1px solid rgba(0, 82, 255, 0.1);
+  color: var(--text-secondary);
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-action-techie:hover {
+  background: var(--tech-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 82, 255, 0.3);
+}
+
+/* Metric Display Cards */
+.metric-card-techie {
+  background: #ffffff;
+  border: 1px solid rgba(0, 82, 255, 0.12);
+  border-radius: 14px;
+  padding: 1.25rem;
+  text-align: center;
+  transform: translateZ(15px);
+  box-shadow: 0 6px 18px rgba(0, 82, 255, 0.05);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.metric-card-techie:hover {
+  transform: translateZ(25px) scale(1.02);
+  border-color: var(--tech-blue);
+}
+
+.metric-title-techie {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.metric-value-techie {
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-top: 0.4rem;
+  color: var(--tech-blue);
+}
+
+/* Attack Crack Time Grid */
+.crack-grid-techie {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.crack-card-techie {
+  background: #ffffff;
+  border: 1px solid rgba(0, 82, 255, 0.12);
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 82, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.crack-card-techie::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--tech-blue), var(--tech-cyan));
+}
+
+.crack-card-techie:hover {
+  transform: translateY(-4px);
+  border-color: var(--tech-blue);
+  box-shadow: 0 15px 30px rgba(0, 82, 255, 0.15);
+}
+
+.crack-card-header-techie {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.crack-card-header-techie i {
+  color: var(--tech-blue);
+}
+
+.crack-card-time-techie {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin: 0.6rem 0 0.2rem 0;
+}
+
+/* Techie Buttons */
+.btn-techie-blue {
+  background: linear-gradient(135deg, var(--tech-blue), var(--tech-blue-vivid));
+  color: #ffffff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  padding: 0.95rem 2rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(0, 82, 255, 0.35);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-techie-blue:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 82, 255, 0.5);
+  color: #ffffff;
+}
+
+.btn-techie-outline {
+  background: #ffffff;
+  border: 1px solid var(--tech-blue);
+  color: var(--tech-blue);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-techie-outline:hover {
+  background: var(--tech-blue);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 82, 255, 0.25);
+}
+
+/* Recommendations Items */
+.rec-item-techie {
+  background: #ffffff;
+  border-left: 4px solid var(--tech-yellow);
+  border-radius: 0 12px 12px 0;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: transform 0.25s ease;
+}
+
+.rec-item-techie:hover {
+  transform: translateX(5px);
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email OTP Authentication Verification - PSWX AI</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Techie 3D Canvas Background -->
+  <canvas id="canvas3d"></canvas>
+
+  <div class="main-wrapper d-flex flex-column min-vh-100 justify-content-center align-items-center py-5">
+    
+    <!-- Email Logo Header -->
+    <div class="text-center mb-4">
+      <div class="bg-white rounded-circle p-3 shadow-lg d-inline-block mb-3">
+        <i class="fa-solid fa-envelope-circle-check text-primary fs-1"></i>
+      </div>
+      <h3 class="fw-bold text-dark mb-1">Email Verification OTP</h3>
+      <p class="text-secondary small">Security OTP Code Sent to <b>{{ pending_auth.email }}</b></p>
+    </div>
+
+    <!-- Verification Card Container -->
+    <div class="glass-card-techie" style="width: 100%; max-width: 440px;">
+      
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show small py-2 mb-3" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <!-- Sent Email Notification Box -->
+      <div class="alert alert-info py-3 px-3 border-0 rounded-3 mb-4 text-center">
+        <div class="small text-dark fw-bold mb-1"><i class="fa-solid fa-paper-plane me-1 text-primary"></i> Email OTP Delivered:</div>
+        <div class="display-6 fw-bold text-primary my-2" style="letter-spacing: 6px;">{{ pending_auth.otp }}</div>
+        <div class="small text-muted">Enter the 6-digit OTP code above to verify ownership and complete authentication.</div>
+      </div>
+
+      <!-- OTP Verification Form -->
+      <form action="/google-verify" method="POST">
+        <div class="mb-4">
+          <label class="form-label text-secondary small fw-bold">Enter 6-Digit Email Verification OTP</label>
+          <div class="input-group">
+            <span class="input-group-text bg-light border-secondary border-opacity-25 text-primary"><i class="fa-solid fa-key"></i></span>
+            <input type="text" name="otp_input" class="form-control bg-light border-secondary border-opacity-25 text-center fw-bold fs-5" style="letter-spacing: 4px;" placeholder="000000" maxlength="6" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm mb-3">
+          <i class="fa-solid fa-shield-check me-1"></i> Verify OTP & Authenticate
+        </button>
+
+        <div class="text-center">
+          <a href="/login" class="text-muted small text-decoration-none">
+            <i class="fa-solid fa-arrow-left me-1"></i> Cancel & Return to Login
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>

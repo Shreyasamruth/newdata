@@ -1,0 +1,71 @@
+{
+  "winning_model": "Logistic Regression",
+  "feature_names": [
+    "length",
+    "num_uppercase",
+    "num_lowercase",
+    "num_digits",
+    "num_symbols",
+    "uppercase_ratio",
+    "digit_ratio",
+    "symbol_ratio",
+    "shannon_entropy",
+    "unique_char_ratio",
+    "consecutive_repeats",
+    "sequential_chars",
+    "keyboard_pattern_score",
+    "dictionary_matches",
+    "has_leetspeak"
+  ],
+  "feature_importances": {},
+  "models_benchmark": {
+    "Logistic Regression": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "train_time_sec": 0.194,
+      "latency_ms": 0.0
+    },
+    "Support Vector Machine": {
+      "accuracy": 0.9964,
+      "precision": 0.9964,
+      "recall": 0.9964,
+      "f1_score": 0.9964,
+      "train_time_sec": 0.755,
+      "latency_ms": 0.0
+    },
+    "Random Forest": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "train_time_sec": 0.701,
+      "latency_ms": 0.002
+    },
+    "XGBoost": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "train_time_sec": 0.826,
+      "latency_ms": 0.0006
+    },
+    "LightGBM": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "train_time_sec": 0.502,
+      "latency_ms": 0.0015
+    },
+    "CatBoost": {
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "train_time_sec": 1.812,
+      "latency_ms": 0.0004
+    }
+  }
+}

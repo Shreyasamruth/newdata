@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML Models Benchmarks & Comparison - PSWX AI</title>
+
+  <!-- Google Fonts: Outfit, Inter, Fira Code -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Three.js (3D Graphics Library) & Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Techie 3D Canvas Background -->
+  <canvas id="canvas3d"></canvas>
+
+  <div class="main-wrapper">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-techie sticky-top">
+      <div class="container-fluid px-4">
+        <a class="navbar-brand text-decoration-none" href="/">
+          <div class="brand-container">
+            <div class="brand-logo-techie">
+              <i class="fa-solid fa-shield-halved fs-5"></i>
+            </div>
+            <span class="brand-text-techie">PSWX <span>AI</span></span>
+            <span class="brand-badge-techie">Security Engine</span>
+          </div>
+        </a>
+        <div class="d-flex align-items-center gap-3">
+          <a href="/" class="btn-techie-outline btn-sm text-decoration-none">
+            <i class="fa-solid fa-house me-1"></i> Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h1 class="hero-title-techie">Machine Learning <span>Model Benchmarks</span></h1>
+        <p class="hero-subtitle-techie">Evaluation of 6 Classification Algorithms trained on 100,000+ password samples</p>
+      </div>
+
+      <!-- Winning Model Card -->
+      <div class="glass-card-techie mb-4 text-center">
+        <h4 class="text-muted text-uppercase mb-2" style="letter-spacing: 1px; font-size: 0.85rem;">Selected Optimal Architecture</h4>
+        <h2 id="winningModelName" class="display-6 fw-bold text-primary">Loading...</h2>
+        <p class="text-muted mt-2 mb-0">Evaluated on Accuracy, F1-Score, Training Speed, and Real-Time Inference Latency.</p>
+      </div>
+
+      <!-- Comparison Charts Row -->
+      <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+          <div class="glass-card-techie h-100">
+            <div class="card-header-title-techie">
+              <i class="fa-solid fa-chart-column"></i> Algorithm Performance Comparison (F1-Score)
+            </div>
+            <div class="p-2" style="height: 300px; position: relative;">
+              <canvas id="modelChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="glass-card-techie h-100">
+            <div class="card-header-title-techie">
+              <i class="fa-solid fa-ranking-star"></i> Feature Importance Breakdown
+            </div>
+            <div class="p-2" style="height: 300px; position: relative;">
+              <canvas id="featureImpChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benchmark Matrix Table -->
+      <div class="glass-card-techie mb-5">
+        <div class="card-header-title-techie">
+          <i class="fa-solid fa-table"></i> Benchmark Metrics Matrix
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0" id="metricsTable">
+            <thead>
+              <tr class="text-primary border-bottom border-secondary border-opacity-25">
+                <th>Algorithm</th>
+                <th>Accuracy</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>F1-Score</th>
+                <th>Train Time (s)</th>
+                <th>Latency (ms/sample)</th>
+              </tr>
+            </thead>
+            <tbody id="metricsTableBody">
+              <tr><td colspan="7" class="text-center py-4 text-muted">Loading metrics...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  <script>
+    async function loadModelStats() {
+      try {
+        const res = await fetch('/api/v1/model-stats');
+        const data = await res.json();
+
+        if (!data || !data.models_benchmark) return;
+
+        document.getElementById('winningModelName').innerText = data.winning_model + " Classifier";
+
+        // Render Table
+        const tbody = document.getElementById('metricsTableBody');
+        tbody.innerHTML = '';
+        const modelNames = Object.keys(data.models_benchmark);
+        const f1Scores = [];
+
+        modelNames.forEach(mName => {
+          const m = data.models_benchmark[mName];
+          f1Scores.push(m.f1_score);
+
+          const tr = document.createElement('tr');
+          const isWinner = mName === data.winning_model;
+          tr.className = isWinner ? 'table-primary fw-bold' : '';
+          tr.innerHTML = `
+            <td class="fw-bold">${mName} ${isWinner ? '<span class="badge bg-primary text-white ms-2">Optimal</span>' : ''}</td>
+            <td>${(m.accuracy * 100).toFixed(2)}%</td>
+            <td>${(m.precision * 100).toFixed(2)}%</td>
+            <td>${(m.recall * 100).toFixed(2)}%</td>
+            <td class="fw-bold text-success">${(m.f1_score * 100).toFixed(2)}%</td>
+            <td>${m.train_time_sec} s</td>
+            <td>${m.latency_ms} ms</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        // Render F1 Chart
+        const ctxModel = document.getElementById('modelChart').getContext('2d');
+        new Chart(ctxModel, {
+          type: 'bar',
+          data: {
+            labels: modelNames,
+            datasets: [{
+              label: 'F1-Score',
+              data: f1Scores,
+              backgroundColor: 'rgba(0, 82, 255, 0.7)',
+              borderColor: '#0052ff',
+              borderWidth: 1.5,
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: { min: 0.9, max: 1.0, grid: { color: 'rgba(0, 0, 0, 0.05)' } },
+              x: { grid: { display: false } }
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        // Render Feature Importance Chart
+        if (data.feature_importances) {
+          const featLabels = Object.keys(data.feature_importances);
+          const featValues = Object.values(data.feature_importances);
+
+          const ctxFeat = document.getElementById('featureImpChart').getContext('2d');
+          new Chart(ctxFeat, {
+            type: 'bar',
+            data: {
+              labels: featLabels.slice(0, 8),
+              datasets: [{
+                label: 'Importance',
+                data: featValues.slice(0, 8),
+                backgroundColor: 'rgba(0, 180, 216, 0.7)',
+                borderColor: '#00b4d8',
+                borderWidth: 1.5,
+                borderRadius: 6
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { legend: { display: false } }
+            }
+          });
+        }
+
+      } catch (err) {
+        console.error("Failed to load model stats:", err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadModelStats);
+  </script>
+</body>
+</html>
